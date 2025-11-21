@@ -1,8 +1,6 @@
 Name: BALOGUN IREOLUWA  
 Matric Number:22CG031840
-Hosted Web GUI URL: https://_________________________________________
-GitHub Repository URL: https://github.com/__________________________________
+Hosted Web GUI URL: _______________________________________
+GitHub Repository URL:https://github.com/Ire91/LLM_QA_Project
 
-Please replace the underscores with your actual information after you deploy
-the Flask application (e.g., Render, PythonAnywhere, Vercel, etc.).
 

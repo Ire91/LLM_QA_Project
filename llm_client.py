@@ -4,6 +4,7 @@ from typing import Any, Dict, Tuple
 
 import requests
 from dotenv import load_dotenv
+import google.generativeai as genai
 
 
 load_dotenv()
@@ -50,6 +51,28 @@ def query_llm(prompt: str) -> Tuple[str, Dict[str, Any]]:
     along with the raw JSON payload.
     """
     provider = os.getenv("LLM_PROVIDER", "openai").strip().lower()
+
+    if provider == "gemini":
+        api_key = os.getenv("GEMINI_API_KEY")
+        model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        if not api_key:
+            raise LLMClientError(
+                "Missing API key for provider 'gemini'. Set GEMINI_API_KEY."
+            )
+        genai.configure(api_key=api_key)
+        try:
+            model_client = genai.GenerativeModel(model)
+            response = model_client.generate_content(prompt)
+        except Exception as exc:  # noqa: BLE001
+            raise LLMClientError(f"Error while contacting Gemini: {exc}") from exc
+
+        try:
+            answer = response.text.strip()
+        except AttributeError as exc:
+            raise LLMClientError(f"Unexpected Gemini response format: {response}") from exc
+
+        raw = response.to_dict() if hasattr(response, "to_dict") else {"response": str(response)}
+        return answer, raw
 
     if provider == "groq":
         api_key = os.getenv("GROQ_API_KEY")
