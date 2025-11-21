@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM Q&A System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>LLM Question &amp; Answer Portal</h1>
+        <p>Ask anything. The system will preprocess your question and relay it to the configured LLM API.</p>
+        {% if error %}
+          <div class="alert error">{{ error }}</div>
+        {% endif %}
+        <form method="POST">
+          <label for="question">Question</label>
+          <textarea
+            id="question"
+            name="question"
+            rows="4"
+            placeholder="e.g., Explain the difference between BFS and DFS."
+          >{{ question }}</textarea>
+          <button type="submit">Ask the LLM</button>
+        </form>
+      </section>
+
+      <section class="card results">
+        <h2>Processed Question</h2>
+        <pre>{{ processed or "Submit a question to see the preprocessing output." }}</pre>
+
+        <h2>Answer</h2>
+        <pre>{{ answer or "The LLM response will appear here." }}</pre>
+
+        <h2>LLM Raw Response</h2>
+        <pre class="raw">{{ raw_response or "Complete JSON from the API call will be shown here." }}</pre>
+      </section>
+    </main>
+  </body>
+</html>
+
+
